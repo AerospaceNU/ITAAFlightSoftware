@@ -11,6 +11,7 @@
 // Define the sensor data struct
 // you can change this with more sensors if you want!
 typedef struct {
+    int timestamp;
     // IMU Data
     double accel_x;
     double accel_y;
@@ -18,6 +19,7 @@ typedef struct {
     double angular_velocity_x;
     double angular_velocity_y;
     double angular_velocity_z;
+    double imu_temperature;
     // Barometer Data
     double pressure;
     double temperature;
@@ -60,11 +62,8 @@ public:
     void logString(String logString);
 
 private:
-    SDClass m_sdCard;
-    Adafruit_DPS310 m_barometer;
-    Adafruit_LSM6DS3TRC m_imu;
-    Adafruit_Sensor* m_accelerometer;
-    Adafruit_Sensor* m_gyroscope;
+    Adafruit_DPS310 dps;
+    Adafruit_LSM6DS3TRC lsm6ds3trc;
 
     SensorData_t m_sensorData;
 };
