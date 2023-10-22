@@ -100,28 +100,6 @@ void HardwareManager::logDataPacket() {
   log_file.print(m_sensorData.temperature);
   log_file.println();
   log_file.close();
-
-
-  Serial.print(m_sensorData.timestamp);
-  Serial.print(",");
-  Serial.print(m_sensorData.accel_x);
-  Serial.print(",");
-  Serial.print(m_sensorData.accel_y);
-  Serial.print(",");
-  Serial.print(m_sensorData.accel_z);
-  Serial.print(",");
-  Serial.print(m_sensorData.angular_velocity_x);
-  Serial.print(",");
-  Serial.print(m_sensorData.angular_velocity_y);
-  Serial.print(",");
-  Serial.print(m_sensorData.angular_velocity_z);
-  Serial.print(",");
-  Serial.print(m_sensorData.imu_temperature);
-  Serial.print(",");
-  Serial.print(m_sensorData.pressure);
-  Serial.print(",");
-  Serial.print(m_sensorData.temperature);
-  Serial.println();
 }
 
 void HardwareManager::logString(String logString) {
