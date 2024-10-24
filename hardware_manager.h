@@ -1,16 +1,16 @@
 #ifndef HARDWARE_MANAGER_H_
 #define HARDWARE_MANAGER_H
 
-#include <Adafruit_LSM6DS33.h>
-#include <Adafruit_LSM6DS3TRC.h>
-#include <Adafruit_DPS310.h>
-#include <SD.h>
+#include <Arduino.h>
+#include <bluefruit.h>
+#include <Wire.h>
+#include <SPI.h>
+#include "lsm6ds3trc.h"
 
-#include "Arduino.h"
 
 // Define the sensor data struct
 // you can change this with more sensors if you want!
-typedef struct {
+struct SensorData {
     // IMU Data
     double accel_x;
     double accel_y;
@@ -21,7 +21,7 @@ typedef struct {
     // Barometer Data
     double pressure;
     double temperature;
-} SensorData_t;
+};
 
 // Function prototypes
 class HardwareManager {
@@ -29,7 +29,7 @@ public:
     /**
      * @brief Constructor for HardwareManager.
     */
-    HardwareManager() = default;
+    HardwareManager() {}
 
     /**
      * @brief Initialzes hardware manager and the attached sensors.
@@ -38,15 +38,15 @@ public:
 
     /**
      * @brief Reads sensor data from all connected sensors and stores
-     *        in internal SensorData_t struct.
+     *        in internal SensorData struct.
     */
     void readSensorData();
 
    /**
     * @brief Returns the sensor data struct for external access.
-    * @return SensorData_t representing the current sensor data.
+    * @return SensorData representing the current sensor data.
     */
-    SensorData_t &getSensorData();
+    SensorData& getSensorData();
 
     /**
      * @brief Logs the currently stored data packet to the SD card.
@@ -60,13 +60,7 @@ public:
     void logString(String logString);
 
 private:
-    SDClass m_sdCard;
-    Adafruit_DPS310 m_barometer;
-    Adafruit_LSM6DS3TRC m_imu;
-    Adafruit_Sensor* m_accelerometer;
-    Adafruit_Sensor* m_gyroscope;
-
-    SensorData_t m_sensorData;
+    SensorData m_sensorData;
 };
 
 #endif // HARDWARE_MANAGER_H_

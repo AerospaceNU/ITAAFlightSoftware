@@ -1,6 +1,6 @@
 # Intro to Aerospace - Avionics Flight Software
 
-This is a template repository for the Intro to Aerospace Avionics track for the Fall 2023 semester.
+This is a template repository for the Intro to Aerospace Avionics track for the Fall 2024 semester.
 
 ### How to use
 Open a terminal window with `git` installed. 
@@ -10,4 +10,6 @@ Make sure you have an SSH key set up and run
 
 This will download and check out `ITAAFlightSoftware` in your current directory.
 
-Open the Arduino IDE and na
+You can also manually download from GitHub to avoid needing to have Git working.
+
+Open the Arduino IDE and navigate to the project folder.
