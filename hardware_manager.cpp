@@ -39,20 +39,20 @@ void HardwareManager::init() {
 
 
 
+
     // Initialize the SD card!
-    if (!SD.begin(SD_CS)) {
-      Serial.println("initialization failed. Things to check:");
-      Serial.println("1. is a card inserted?");
-      Serial.println("2. is your wiring correct?");
-      Serial.println("3. did you change the chipSelect pin to match your shield or module?");
-      Serial.println("Note: press reset button on the board and reopen this Serial Monitor after fixing your issue!");
-      while (true);
-    }
+    // if (!SD.begin(SD_CS)) {
+    //   Serial.println("initialization failed. Things to check:");
+    //   Serial.println("1. is a card inserted?");
+    //   Serial.println("2. is your wiring correct?");
+    //   Serial.println("3. did you change the chipSelect pin to match your shield or module?");
+    //   Serial.println("Note: press reset button on the board and reopen this Serial Monitor after fixing your issue!");
+    //   while (true);
+    // }
     
 }
 
 void HardwareManager::readSensorData() {
-
   // Get a new normalized sensor event
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -66,41 +66,51 @@ void HardwareManager::readSensorData() {
   }
 
   dps.getEvents(&temp_event, &pressure_event);
-  Serial.print(F("Temperature = "));
-  Serial.print(temp_event.temperature);
-  Serial.println(" *C");
+  // Serial.print(F("Temperature = "));
+  // Serial.print(temp_event.temperature);
+  // Serial.println(" *C");
+  // Serial.print(F("Pressure = "));
+  // Serial.print(pressure_event.pressure);
 
-  Serial.print(F("Pressure = "));
-  Serial.print(pressure_event.pressure);
-  Serial.println(" hPa"); 
+  // Serial.println(" hPa"); 
+  // Serial.println();
+  //   Serial.print("\t\tTemperature ");
+  // Serial.print(temp.temperature);
+  // Serial.println(" deg C");
 
-  Serial.println();
+  // /* Display the results (acceleration is measured in m/s^2) */
+  // Serial.print("\t\tAccel X: ");
+  // Serial.print(accel.acceleration.x);
 
-    Serial.print("\t\tTemperature ");
-  Serial.print(temp.temperature);
-  Serial.println(" deg C");
 
-  /* Display the results (acceleration is measured in m/s^2) */
-  Serial.print("\t\tAccel X: ");
-  Serial.print(accel.acceleration.x);
-  Serial.print(" \tY: ");
-  Serial.print(accel.acceleration.y);
-  Serial.print(" \tZ: ");
-  Serial.print(accel.acceleration.z);
-  Serial.println(" m/s^2 ");
+  
+  // Serial.print(" \tY: ");
+  // Serial.print(accel.acceleration.y);
+  // Serial.print(" \tZ: ");
+  // Serial.print(accel.acceleration.z);
+  // Serial.println(" m/s^2 ");
 
-  /* Display the results (rotation is measured in rad/s) */
-  Serial.print("\t\tGyro X: ");
-  Serial.print(gyro.gyro.x);
-  Serial.print(" \tY: ");
-  Serial.print(gyro.gyro.y);
-  Serial.print(" \tZ: ");
-  Serial.print(gyro.gyro.z);
-  Serial.println(" radians/s ");
-  Serial.println();
+  // /* Display the results (rotation is measured in rad/s) */
+  // Serial.print("\t\tGyro X: ");
+  // Serial.print(gyro.gyro.x);
+  // Serial.print(" \tY: ");
+  // Serial.print(gyro.gyro.y);
+  // Serial.print(" \tZ: ");
+  // Serial.print(gyro.gyro.z);
+  // Serial.println(" radians/s ");
+  // Serial.println();
+
+  m_sensorData.temperature = temp_event.temperature;
+  m_sensorData.pressure = pressure_event.pressure;
+  m_sensorData.accel_x = accel.acceleration.x;
+  m_sensorData.accel_y = accel.acceleration.y;
+  m_sensorData.accel_z = accel.acceleration.z;
+  m_sensorData.angular_velocity_x = gyro.gyro.x;
+  m_sensorData.angular_velocity_y = gyro.gyro.y;
+  m_sensorData.angular_velocity_z = gyro.gyro.z;
 }
 
-SensorData& HardwareManager::getSensorData() {
+const SensorData& HardwareManager::getSensorData() {
   return m_sensorData;
 }
 

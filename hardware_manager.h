@@ -5,7 +5,6 @@
 #include <bluefruit.h>
 #include <Wire.h>
 #include <SPI.h>
-#include "lsm6ds3trc.h"
 
 
 // Define the sensor data struct
@@ -46,7 +45,7 @@ public:
     * @brief Returns the sensor data struct for external access.
     * @return SensorData representing the current sensor data.
     */
-    SensorData& getSensorData();
+    const SensorData& getSensorData();
 
     /**
      * @brief Logs the currently stored data packet to the SD card.
