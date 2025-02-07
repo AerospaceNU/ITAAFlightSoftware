@@ -14,6 +14,16 @@ const double LAUNCH_ACCEL_THRESHOLD = 3 * ACCEL_G_EARTH;
 const uint32_t LAUNCH_ACCEL_TIME = 300; // ms
 
 int min_pressure = 10000; // minimum pressure = maximum height
+const int APOGEE_PRESSURE_DIFFERENTIAL = 30;
+
+
+const float TOUCHDOWN_PRESSURE_THRESHOLD = 1.0; // hPa
+const uint32_t TOUCHDOWN_THRESHOLD_TIME = 5000; // 5 seconds
+
+uint32_t touchdown_check_time;
+float touchdown_desired_pressure;
+
+
 
 // The time since which we have continuously been above the accel threshold
 uint32_t launch_threshold_true_since = 0;
@@ -56,6 +66,7 @@ void loop() {
 
     // TODO: Log sensor data to SD card
 
+    hardware_manager.logDataPacket();
     // TODO: Print out the data here
 
     switch (state) {
@@ -70,16 +81,39 @@ void loop() {
         break;
       case Ascent:
         min_pressure = min(pressure_avg.getAvg(), min_pressure);
-        if (pressure_avg.getAvg() > 30 + min_pressure) {
+
+        if (pressure_avg.getAvg() > min_pressure + APOGEE_PRESSURE_DIFFERENTIAL) {
           state = Descent;
+          touchdown_check_time = millis() + TOUCHDOWN_THRESHOLD_TIME;
+          touchdown_desired_pressure = pressure_avg.getAvg() + TOUCHDOWN_PRESSURE_THRESHOLD;
         }
 
         Serial.println("In ascent!");
         break;
       case Descent:
-        if (false) {
-          state = Postflight;
+        // Option 1
+        if (millis() > touchdown_check_time) {
+          // It has been past our threshold inside this block
+          if (pressure_avg.getAvg() >= touchdown_desired_pressure) {
+            // Stay in descent
+            touchdown_check_time = millis() + TOUCHDOWN_THRESHOLD_TIME;
+            touchdown_desired_pressure = pressure_avg.getAvg() + TOUCHDOWN_PRESSURE_THRESHOLD;
+          } else {
+            state = Postflight;
+          }
         }
+
+        // Another slightly different way to perform landing detection
+        // if (pressure_avg.getAvg() >= touchdown_desired_pressure) {
+        //   touchdown_check_time = millis() + TOUCHDOWN_THRESHOLD_TIME;
+        //   touchdown_desired_pressure = pressure_avg.getAvg() + TOUCHDOWN_PRESSURE_THRESHOLD;
+        // }
+
+        // if (millis() > touchdown_check_time) {
+        //   state = Postflight;
+        // }
+
+
         Serial.println("In descent!");
         break;
       case Postflight:

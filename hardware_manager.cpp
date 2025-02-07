@@ -12,8 +12,8 @@ Adafruit_DPS310 dps;
 Adafruit_Sensor *dps_temp;
 Adafruit_Sensor *dps_pressure;
 
-const uint8_t LSM_CS = 6;
-const uint8_t DPS_CS = 9;
+const uint8_t LSM_CS = 9;
+const uint8_t DPS_CS = 6;
 const uint8_t SD_CS = 10;
 
 
@@ -41,15 +41,14 @@ void HardwareManager::init() {
 
 
     // Initialize the SD card!
-    // if (!SD.begin(SD_CS)) {
-    //   Serial.println("initialization failed. Things to check:");
-    //   Serial.println("1. is a card inserted?");
-    //   Serial.println("2. is your wiring correct?");
-    //   Serial.println("3. did you change the chipSelect pin to match your shield or module?");
-    //   Serial.println("Note: press reset button on the board and reopen this Serial Monitor after fixing your issue!");
-    //   while (true);
-    // }
-    
+    if (!SD.begin(SD_CS)) {
+      Serial.println("initialization failed. Things to check:");
+      Serial.println("1. is a card inserted?");
+      Serial.println("2. is your wiring correct?");
+      Serial.println("3. did you change the chipSelect pin to match your shield or module?");
+      Serial.println("Note: press reset button on the board and reopen this Serial Monitor after fixing your issue!");
+      while (true);
+    } 
 }
 
 void HardwareManager::readSensorData() {
@@ -115,7 +114,26 @@ const SensorData& HardwareManager::getSensorData() {
 }
 
 void HardwareManager::logDataPacket() {
-
+  File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  dataFile.print(millis());
+  dataFile.print(",");
+  dataFile.print(m_sensorData.temperature, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.pressure, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.accel_x, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.accel_y, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.accel_z, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.angular_velocity_x, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.angular_velocity_y, 8);
+  dataFile.print(",");
+  dataFile.print(m_sensorData.angular_velocity_z, 8);
+  dataFile.println();
+  dataFile.close();
 }
 
 void HardwareManager::logString(String logString) {
