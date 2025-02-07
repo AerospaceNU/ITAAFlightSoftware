@@ -12,8 +12,8 @@ Adafruit_DPS310 dps;
 Adafruit_Sensor *dps_temp;
 Adafruit_Sensor *dps_pressure;
 
-const uint8_t LSM_CS = 9;
-const uint8_t DPS_CS = 6;
+const uint8_t LSM_CS = 6;
+const uint8_t DPS_CS = 9;
 const uint8_t SD_CS = 10;
 
 
